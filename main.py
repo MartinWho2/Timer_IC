@@ -1,19 +1,23 @@
+import time
 from datetime import datetime
+from shader_engine import Engine
 import pygame
-pygame.init()
 
-window = pygame.display.set_mode((0,0),pygame.FULLSCREEN)
+pygame.display.set_mode((1440,960),pygame.DOUBLEBUF|pygame.OPENGL)
+window = pygame.Surface((1440,960)).convert((255, 65282, 16711681, 0))
+engine = Engine(window)
 clock = pygame.time.Clock()
 font = pygame.font.SysFont("arial",125,bold=True)
 size = window.get_size()
+
 pause = False
 
 image = pygame.image.load("image.png")
 image.set_colorkey((233,29,233))
-
+t = time.time()
 while True:
     pause = False
-    clock.tick(3)
+    clock.tick(60)
     window.fill("black")
     now = datetime.now()
     current_time = now.strftime("%H:%M:%S")
@@ -34,7 +38,9 @@ while True:
         window.blit(time_text, (((size[0] - time_text.get_width()) / 2), size[1] * 0.8))
 
     window.blit(image,((size[0]-image.get_width())/2,size[1]*0.05))
-    pygame.display.flip()
+    engine()
+    engine.prog["time"] = time.time()-t
+    #pygame.display.flip()
     for e in pygame.event.get():
         if e.type == pygame.QUIT:
             pygame.quit()
