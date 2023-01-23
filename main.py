@@ -13,15 +13,17 @@ size = window.get_size()
 pause = False
 
 
-async def main():
+def main():
     image = pygame.image.load("new_image.png").convert()
     image.set_colorkey((255,0,220))
-    print(image.get_at((20,0)))
     image = pygame.transform.scale(image,(round(size[0]*640/1920),round(size[0]*640/1920)))
     t = time.time()
     time_before_pause = "Temps avant la pause : "
     little_font = pygame.font.SysFont("arial",round(window.get_width()/24),bold =True)
+    very_small_font = pygame.font.SysFont("arial",round(window.get_width()/80),bold = True)
     time_pause_text = little_font.render(time_before_pause,True,"white")
+    sivouple = very_small_font.render("sivouplé cassé pa lé tabl",True,"black")
+    sivouple_white = very_small_font.render("sivouplé cassé pa lé tabl",True,"white")
     while True:
         pause = False
         clock.tick(60)
@@ -47,6 +49,8 @@ async def main():
             window.fill((100,210,86))
             time_text = font.render(current_time, True, "white")
             time_text_black = font.render(current_time, True, "black")
+            window.blit(sivouple, (round((size[0] - sivouple.get_width()) / 2)+2, round(image.get_height()+size[1]*0.03)+2))
+            window.blit(sivouple_white, (round((size[0] - sivouple.get_width()) / 2), round(image.get_height()+size[1]*0.03)))
             window.blit(time_text_black, (((size[0] - time_text.get_width()) / 2)+5, size[1] * 0.65+5))
             window.blit(time_text, ((round((size[0] - time_text.get_width()) / 2)),round(size[1] * 0.65)))
         else:
@@ -54,6 +58,8 @@ async def main():
             window.blit(time_pause_text, (round(size[0]*0.08),round(size[1]*0.82)))
             window.blit(minutes_left_text,(round(size[0]*0.55),round(size[1]*0.8)))
             window.blit(time_text, (round((size[0] - time_text.get_width()) / 2), round(size[1] * 0.65)))
+            window.blit(sivouple_white, (round((size[0] - sivouple.get_width()) / 2), round(image.get_height()+size[1]*0.03)))
+
 
         window.blit(image,((size[0]-image.get_width())/2,size[1]*0.05))
         #engine()
@@ -63,6 +69,5 @@ async def main():
             if e.type == pygame.QUIT:
                 pygame.quit()
                 quit()
-        await asyncio.sleep(0)
 
-asyncio.run(main())
+main()
